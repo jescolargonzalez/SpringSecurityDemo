@@ -1,5 +1,6 @@
 package com.app.config;
 
+import com.app.service.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +32,7 @@ import java.util.List;
 @EnableMethodSecurity
 public class SecurityConfig {
 
+    // -- CONFIGURATION MANUAL  ENDPOINTS --
 //    @Bean
 //    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 //        return httpSecurity
@@ -48,7 +50,6 @@ public class SecurityConfig {
 //                })
 //                .build();
 //    }
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
@@ -58,41 +59,45 @@ public class SecurityConfig {
                 .build();
     }
 
+
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(); //conexion DB
+    public AuthenticationProvider authenticationProvider(UserDetailServiceImpl userDetailService){
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder());
-        provider.setUserDetailsService(userDetailsService());
+        provider.setUserDetailsService(userDetailService);
         return provider;
     }
+
     @Bean
-    public UserDetailsService userDetailsService(){
-
-        List<UserDetails> userDetailsList = new ArrayList<>();
-
-        userDetailsList.add(User.withUsername("admin")
-                .password("admin")
-                .roles("ADMIN")
-                .authorities("READ", "CREATE")
-                .build());
-
-        userDetailsList.add(User.withUsername("user")
-                .password("user")
-                .roles("USER")
-                .authorities("READ")
-                .build());
-
-        return new InMemoryUserDetailsManager(userDetailsList);
+    public PasswordEncoder passwordEncoder(){
+        //return new BCryptPasswordEncoder();
+        return NoOpPasswordEncoder.getInstance(); // -- NO RECOMENDADO -- (txt plano)
     }
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance(); // pruebas
-     // return BCryptPasswordEncoder.getInstance();
-    }
-
 }
+
+// -- CONFIGURATION MANUAL * USERS --
+//    @Bean
+//    public UserDetailsService userDetailsService(){
+//
+//        List<UserDetails> userDetailsList = new ArrayList<>();
+//
+//        userDetailsList.add(User.withUsername("admin")
+//                .password("admin")
+//                .roles("ADMIN")
+//                .authorities("READ", "CREATE")
+//                .build());
+//
+//        userDetailsList.add(User.withUsername("user")
+//                .password("user")
+//                .roles("USER")
+//                .authorities("READ")
+//                .build());
+//
+//        return new InMemoryUserDetailsManager(userDetailsList);
+//    }
+
