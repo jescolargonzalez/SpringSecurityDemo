@@ -31,8 +31,7 @@ import java.util.List;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-
-    // -- CONFIGURATION MANUAL  ENDPOINTS --
+// -- -- -- CONFIGURATION MANUAL  ENDPOINTS --
 //    @Bean
 //    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 //        return httpSecurity
@@ -58,13 +57,10 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
     }
-
-
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
-
     @Bean
     public AuthenticationProvider authenticationProvider(UserDetailServiceImpl userDetailService){
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -75,10 +71,16 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder(){
-        //return new BCryptPasswordEncoder();
-        return NoOpPasswordEncoder.getInstance(); // -- NO RECOMENDADO -- (txt plano)
+        return new BCryptPasswordEncoder();
+       // return NoOpPasswordEncoder.getInstance(); // -- NO RECOMENDADO -- (txt plano)
     }
+
 }
+
+// -- VER CONTRASEÑA ENCRIPTADA
+//    public static void main(String[] args){
+//        System.out.println(new BCryptPasswordEncoder().encode("admin"));
+//    }
 
 // -- CONFIGURATION MANUAL * USERS --
 //    @Bean
