@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -35,7 +36,7 @@ public class JwtUtils {
                 .collect(Collectors.joining(","));
 
         String jwtToken = JWT.create()
-                .withIssuer(userGenerator)
+                .withIssuer(this.userGenerator)
                 .withSubject(username)
                 .withClaim("authorities", authorities)
                 .withIssuedAt(new Date(System.currentTimeMillis()))
@@ -50,11 +51,14 @@ public class JwtUtils {
     public DecodedJWT validateToken(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(this.privateKey);
+
             JWTVerifier verifier = JWT.require(algorithm)
                     .withIssuer(this.userGenerator)
                     .build();
+
             DecodedJWT decodedJWT = verifier.verify(token);
             return decodedJWT;
+
         } catch (JWTVerificationException exc) {
             throw new JWTVerificationException("Token is invalid");
         }

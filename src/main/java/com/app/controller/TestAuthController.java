@@ -7,23 +7,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/method")
 @PreAuthorize("denyAll()")
 public class TestAuthController {
-//    @GetMapping("/hello")
-//    @PreAuthorize("permitAll()")
-//    public String hello() {
-//        return "Hello World! · [NO SECURED]";
-//    }
-//
-//    @GetMapping("/hello2")
-//    @PreAuthorize("hasAuthority('CREATE')")
-//    public String hello2() {
-//        return "Hello 2 World! · [SECURED]";
-//    }
-//
-//    @GetMapping("/hello-secured")
-//    @PreAuthorize("hasAuthority('READ')")
-//    public String helloSecured() {
-//        return "Accessed secured endpoint";
-//    }
     @GetMapping("/get")
     @PreAuthorize("hasAuthority('READ')")
     public String helloGet() {

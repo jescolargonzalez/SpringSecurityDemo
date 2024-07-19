@@ -5,14 +5,13 @@ import com.app.persistence.entity.RoleEntity;
 import com.app.persistence.entity.RoleEnum;
 import com.app.persistence.entity.UserEntity;
 import com.app.persistence.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Role;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -20,7 +19,8 @@ import java.util.Set;
 public class SpringSecurityAppApplication {
 
 	public static void main(String[] args) {SpringApplication.run(SpringSecurityAppApplication.class, args);}
-
+	@Autowired
+	PasswordEncoder passwordEncoder;
 	@Bean
 	CommandLineRunner init(UserRepository userRepository) {
 		return args -> {
@@ -65,7 +65,7 @@ public class SpringSecurityAppApplication {
 			// Crea USERS */
 			UserEntity user = UserEntity.builder()
 					.username("user")
-					.password("user")
+					.password(passwordEncoder.encode("user"))
 					.isEnabled(true)
 					.accountNoExpired(true)
 					.accountNoLocked(true)
@@ -75,7 +75,7 @@ public class SpringSecurityAppApplication {
 
 			UserEntity admin = UserEntity.builder()
 					.username("admin")
-					.password("admin")
+					.password(passwordEncoder.encode("admin"))
 					.isEnabled(true)
 					.accountNoExpired(true)
 					.accountNoLocked(true)
@@ -85,7 +85,7 @@ public class SpringSecurityAppApplication {
 
 			UserEntity invited = UserEntity.builder()
 					.username("invited")
-					.password("invited")
+					.password(passwordEncoder.encode("invited"))
 					.isEnabled(true)
 					.accountNoExpired(true)
 					.accountNoLocked(true)
@@ -95,7 +95,7 @@ public class SpringSecurityAppApplication {
 
 			UserEntity developer = UserEntity.builder()
 					.username("developer")
-					.password("developer")
+					.password(passwordEncoder.encode("developer"))
 					.isEnabled(true)
 					.accountNoExpired(true)
 					.accountNoLocked(true)
