@@ -10,7 +10,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,7 +22,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
     @Autowired
@@ -34,14 +33,15 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf(csrf -> csrf.disable())
-                .httpBasic(Customizer.withDefaults())
+                //.httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(http ->{
                     // Config ENDPOINTS - Publicos
                     http.requestMatchers(HttpMethod.POST,"/auth/**").permitAll();
+                    http.requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll();
                     // Config ENDPOINTS - Privados
                     http.requestMatchers(HttpMethod.GET,"/method/pruebas").hasAnyAuthority("READ");
-                    http.requestMatchers(HttpMethod.POST, "/method/pruebas").hasAnyRole("ADMIN","DEVELOPER");;
+                    http.requestMatchers(HttpMethod.POST, "/method/pruebas").hasAnyRole("ADMIN","DEVELOPER");
                     http.requestMatchers(HttpMethod.PATCH,"/method/pruebas").hasAuthority("REFACTOR");
                     http.requestMatchers(HttpMethod.PUT,"/method/pruebas").hasAuthority("UPDATE");
                     http.requestMatchers(HttpMethod.DELETE,"/method/pruebas").hasAuthority("DELETE");
@@ -70,10 +70,5 @@ public class SecurityConfig {
     }
 
 }
-
-// -- VER CONTRASEÑA ENCRIPTADA
-//    public static void main(String[] args){
-//        System.out.println(new BCryptPasswordEncoder().encode("admin"));
-//    }
 
 
