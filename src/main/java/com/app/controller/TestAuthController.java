@@ -7,30 +7,30 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/method")
 @PreAuthorize("denyAll()")
 public class TestAuthController {
-    @GetMapping("/get")
+    @GetMapping("/pruebas")
     @PreAuthorize("hasAuthority('READ')")
     public String helloGet() {
-        return "Hello World";
+        return "Hello World (READ)";
     }
-    @PostMapping("/post")
+    @PostMapping("/pruebas")
     @PreAuthorize("hasAuthority('CREATE')")
     public String helloPost() {
-        return "Hello World";
+        return "Hello World (CREATE)";
     }
     @PreAuthorize("hasAuthority('UPDATE')")
-    @PutMapping("/put")
+    @PutMapping("/pruebas")
     public String helloPut() {
-        return "Hello World";
+        return "Hello World (UPDATE)";
     }
     @PreAuthorize("hasAuthority('DELETE')")
-    @DeleteMapping("/delete")
+    @DeleteMapping("/pruebas")
     public String helloDelete() {
-        return "Hello World";
+        return "Hello World (DELETE)";
     }
     @PreAuthorize("hasAuthority('REFACTOR')")
-    @PatchMapping("/patch")
+    @PatchMapping("/pruebas")
     public String helloPatch() {
-        return "Hello World";
+        return "Hello World (reFACTOR)";
     }
 
 

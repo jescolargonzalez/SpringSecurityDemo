@@ -40,7 +40,11 @@ public class SecurityConfig {
                     // Config ENDPOINTS - Publicos
                     http.requestMatchers(HttpMethod.POST,"/auth/**").permitAll();
                     // Config ENDPOINTS - Privados
-                    http.requestMatchers(HttpMethod.GET,"/auth/hello-secured").hasAuthority("CREATE");
+                    http.requestMatchers(HttpMethod.GET,"/method/pruebas").hasAnyAuthority("READ");
+                    http.requestMatchers(HttpMethod.POST, "/method/pruebas").hasAnyRole("ADMIN","DEVELOPER");;
+                    http.requestMatchers(HttpMethod.PATCH,"/method/pruebas").hasAuthority("REFACTOR");
+                    http.requestMatchers(HttpMethod.PUT,"/method/pruebas").hasAuthority("UPDATE");
+                    http.requestMatchers(HttpMethod.DELETE,"/method/pruebas").hasAuthority("DELETE");
                     // Config ENDPOINTS - no especificados
                     http.anyRequest().denyAll();
                     //http.anyRequest().authenticated();
