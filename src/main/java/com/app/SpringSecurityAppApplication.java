@@ -10,6 +10,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
@@ -114,6 +115,19 @@ public class SpringSecurityAppApplication {
 					.build();
 
 			userRepository.saveAll(List.of(user, admin, invited, developer, userAll));
+
+		//ver contraseña encriptada
+		System.out.println("");
+		System.out.println("USER DEFAULTS");
+		System.out.println("----------------------------------------------------------------------------------------------------");
+        System.out.println("Username : admin " + " Password : " + new BCryptPasswordEncoder().encode("admin"));
+		System.out.println("Username : user " + " Password : " + new BCryptPasswordEncoder().encode("user"));
+		System.out.println("Username : invited " + " Password : " + new BCryptPasswordEncoder().encode("invited"));
+		System.out.println("Username : developer " + " Password : " + new BCryptPasswordEncoder().encode("developer"));
+		System.out.println("Username : userAll " + " Password : " + new BCryptPasswordEncoder().encode("userAll"));
+		System.out.println("----------------------------------------------------------------------------------------------------");
+
+
 		};
 	}
 }
