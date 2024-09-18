@@ -106,7 +106,7 @@ public class SpringSecurityAppApplication {
 
 			UserEntity userAll = UserEntity.builder()
 					.username("userAll")
-					.password("userAll")
+					.password(passwordEncoder.encode("userAll"))
 					.isEnabled(true)
 					.accountNoExpired(true)
 					.accountNoLocked(true)
