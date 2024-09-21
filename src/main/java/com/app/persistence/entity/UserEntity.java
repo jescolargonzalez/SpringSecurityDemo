@@ -22,7 +22,6 @@ public class UserEntity {
     private String username;
     private String password;
 
-
     // -- >> OBLIGATORIAS SPRING SECURITY
     @Column(name = "is_enabled")
     private Boolean isEnabled;
@@ -41,5 +40,8 @@ public class UserEntity {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<RoleEntity> role = new HashSet<>();
+
+    @OneToOne(mappedBy = "userEntity", cascade = CascadeType.ALL)
+    private UserDetails userDetails;
 
 }

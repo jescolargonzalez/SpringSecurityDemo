@@ -1,9 +1,7 @@
 package com.app;
 
-import com.app.persistence.entity.PermissionEntity;
-import com.app.persistence.entity.RoleEntity;
-import com.app.persistence.entity.RoleEnum;
-import com.app.persistence.entity.UserEntity;
+import com.app.persistence.entity.*;
+import com.app.persistence.repository.UserDetailsRepository;
 import com.app.persistence.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -23,7 +21,7 @@ public class SpringSecurityAppApplication {
 	@Autowired
 	PasswordEncoder passwordEncoder;
 	@Bean
-	CommandLineRunner init(UserRepository userRepository) {
+	CommandLineRunner init(UserRepository userRepository, UserDetailsRepository userDetailsRepository) {
 		return args -> {
 			// Crea permisos */
 			PermissionEntity createPermission = PermissionEntity.builder()
@@ -115,6 +113,40 @@ public class SpringSecurityAppApplication {
 					.build();
 
 			userRepository.saveAll(List.of(user, admin, invited, developer, userAll));
+
+		        // Crea UserDetails
+        UserDetails userDetails1 = UserDetails.builder()
+            .nombre("John")
+            .apellidos("Doe")
+            .email("john.doe@example.com")
+            .fechaNacimiento("1990-01-01")
+            .dni("12345678A")
+            .telefono("123456789")
+            .direccion("123 Main St")
+            .pais("USA")
+            .codigoPostal("12345")
+            .ciudad("New York")
+            .iban("US12345678901234567890")
+            .userEntity(user)
+            .build();
+
+        UserDetails userDetails2 = UserDetails.builder()
+            .nombre("Jane")
+            .apellidos("Doe")
+            .email("jane.doe@example.com")
+            .fechaNacimiento("1992-02-02")
+            .dni("87654321B")
+            .telefono("987654321")
+            .direccion("456 Elm St")
+            .pais("USA")
+            .codigoPostal("54321")
+            .ciudad("Los Angeles")
+            .iban("US09876543210987654321")
+            .userEntity(admin)
+            .build();
+
+        userDetailsRepository.saveAll(List.of(userDetails1, userDetails2));
+
 
 		//ver contraseña encriptada
 		System.out.println("");
